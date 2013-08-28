@@ -30,6 +30,8 @@ define([
             var nmonth = now.getMonth();
             var nyear = now.getFullYear();
 
+            this.updateDate(nyear, nmonth);
+
             this._jfcalplugin = jfcalplugin;
             this._calActs = calActs
 
@@ -47,6 +49,8 @@ define([
             var cmonth = calDate.getMonth();
             var cday = calDate.getDate();
 
+            this.updateDate(cyear, cmonth);
+
             this._calActs.getData(cyear, cmonth);
             // jquery datepicker month starts at 1 (1=January) so we add 1
             //$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
@@ -62,6 +66,8 @@ define([
             var cmonth = calDate.getMonth();
             var cday = calDate.getDate();
 
+            this.updateDate(cyear, cmonth);
+
             this._calActs.getData(cyear, cmonth);
             // jquery datepicker month starts at 1 (1=January) so we add 1
             //$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
@@ -70,12 +76,9 @@ define([
 
         addActs: function () {
             var acts = this._calActs.pop().attributes;
-            console.log(acts);
 
             var start_time = eval(acts.activity.start);
             var end_time = eval(acts.activity.end);
-
-            console.log(start_time);
 
             this._jfcalplugin.addAgendaItem(
                 "#clubcal",
@@ -90,6 +93,10 @@ define([
                 }
             )
 
+        },
+
+        updateDate: function (year, month) {
+            $("#date").html(year + ' - ' + (parseInt(month) + 1));
         }
     });
 
