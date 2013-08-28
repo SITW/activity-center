@@ -4,19 +4,16 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'templates',
     'collections/calendar_collection',
     'jqueryUI',
     'jshashtable',
     'colorpicker',
     'jqueryQtip',
     'jqueryCalendar'
-], function ($, _, Backbone, JST, CalActs) {
+], function ($, _, Backbone, CalActs) {
 
     var CalendarView = Backbone.View.extend({
         el: 'body',
-
-        template: JST['app/scripts/templates/calendar.ejs'],
 
         events: {
             "click #BtnPreviousMonth": "preMonth",
