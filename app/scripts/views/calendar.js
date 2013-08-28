@@ -96,7 +96,7 @@ define([
         },
 
         updateDate: function (year, month) {
-            $("#date").html(year + ' - ' + month);
+            $("#date").html(year + ' - ' + (parseInt(month) + 1));
         }
     });
 
