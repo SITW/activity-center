@@ -18,6 +18,7 @@ define([
                 for (var i = data.length - 1; i >= 0; i--) {
                     _this.add({activity: data[i]});
                 };
+                console.log(data);
 
             });
         }
