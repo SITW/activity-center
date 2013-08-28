@@ -5,75 +5,93 @@ define([
     'underscore',
     'backbone',
     'templates',
+    'collections/calendar_collection',
     'jqueryUI',
     'jshashtable',
     'colorpicker',
     'jqueryQtip',
     'jqueryCalendar'
-], function ($, _, Backbone, JST) {
-    'use strict';
+], function ($, _, Backbone, JST, CalActs) {
 
     var CalendarView = Backbone.View.extend({
+        el: 'body',
+
         template: JST['app/scripts/templates/calendar.ejs'],
 
-        initialize: function () {
-            /**
-             * Initialize with current year and date. Returns reference to plugin object.
-             */
-            var jfcalplugin = $("#mycal").jFrontierCal({
-                date: new Date(),
-                dayClickCallback: myDayClickHandler,
-                agendaClickCallback: myAgendaClickHandler,
-                agendaDropCallback: myAgendaDropHandler,
-                dragAndDropEnabled: true
-            }).data("plugin");
+        events: {
+            "click #BtnPreviousMonth": "preMonth",
+            "click #BtnNextMonth": "nextMonth"
+        },
 
-            jfcalplugin.addAgendaItem(
-                "#mycal",
-                "Indiana Jones and the Last Crusade",
-                new Date(2013,7,24,1,0,0,0),
-                new Date(2013,7,24,23,59,59,999),
+        initialize: function () {
+
+            var jfcalplugin = $("#clubcal").jFrontierCal({
+                date: new Date()
+            }).data("plugin");
+            var calActs = new CalActs();
+            var now = new Date();
+            var nmonth = now.getMonth();
+            var nyear = now.getFullYear();
+
+            this._jfcalplugin = jfcalplugin;
+            this._calActs = calActs
+
+            this.listenTo(calActs, 'add', this.addActs)
+            calActs.getData(nyear, nmonth);
+
+        },
+
+        nextMonth: function () {
+            this._jfcalplugin.showNextMonth("#clubcal");
+            // update the jqeury datepicker value
+            var calDate = this._jfcalplugin.getCurrentDate("#clubcal"); // returns Date object
+            var cyear = calDate.getFullYear();
+            // Date month 0-based (0=January)
+            var cmonth = calDate.getMonth();
+            var cday = calDate.getDate();
+
+            calActs.getData(cyear, cmonth);
+            // jquery datepicker month starts at 1 (1=January) so we add 1
+            //$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
+            return false;
+        },
+
+        preMonth: function () {
+            this._jfcalplugin.showPreviousMonth("#clubcal");
+            // update the jqeury datepicker value
+            var calDate = this._jfcalplugin.getCurrentDate("#clubcal"); // returns Date object
+            var cyear = calDate.getFullYear();
+            // Date month 0-based (0=January)
+            var cmonth = calDate.getMonth();
+            var cday = calDate.getDate();
+
+            calActs.getData(cyear, cmonth);
+            // jquery datepicker month starts at 1 (1=January) so we add 1
+            //$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
+            return false;
+        },
+
+        addActs: function () {
+            var acts = this._calActs.pop().attributes;
+            console.log(acts);
+
+            var start_time = eval(acts.activity.start);
+            var end_time = eval(acts.activity.end);
+
+            console.log(start_time);
+
+            this._jfcalplugin.addAgendaItem(
+                "#clubcal",
+                acts.activity.title,
+                start_time,
+                end_time,
                 false,
                 {
-                    fname: "Indiana",
-                    lname: "Jones",
-                    artifact: "Holy Grail"
-                },
-                {
-                    backgroundColor: "#FF0000",
-                    foregroundColor: "#FFFFFF"
+                    "人數": acts.activity.other.population,
+                    "申請人姓名": acts.activity.other.name,
+                    "活動地點": acts.activity.other.site
                 }
-            );
-            /**
-             * Get the date (Date object) of the day that was clicked from the event object
-             */
-            function myDayClickHandler(eventObj){
-                var date = eventObj.data.calDayDate;
-                alert("You clicked day " + date.toDateString());
-            };
-            /**
-             * Get the agenda item that was clicked.
-             */
-            function myAgendaClickHandler (eventObj){
-                var agendaId = eventObj.data.agendaId;
-                var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);
-            };
-            /**
-             * get the agenda item that was dropped. It's start and end dates will be updated.
-             */
-            function myAgendaDropHandler(eventObj){
-                var agendaId = eventObj.data.agendaId;
-                var date = eventObj.data.calDayDate;
-                var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);
-                alert("You dropped agenda item " + agendaItem.title +
-                    " onto " + date.toString() + ". Here is where you can make an AJAX call to update your database.");
-            };
-
-            console.log(jfcalplugin.getCurrentDate('#mycal'));
-
-
-
-            jfcalplugin.setAspectRatio("#mycal",0.75);
+            )
 
         }
     });

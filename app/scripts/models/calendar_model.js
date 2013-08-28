@@ -8,6 +8,7 @@ define([
 
     var CalendarModelModel = Backbone.Model.extend({
         defaults: {
+            "activity": null
         }
     });
 
