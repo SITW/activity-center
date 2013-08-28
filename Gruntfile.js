@@ -252,7 +252,9 @@ module.exports = function (grunt) {
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
                         'CNAME',
-                        'convert-data/**/*'
+                        'convert-data/**/*',
+                        'bower_components/**/*',
+                        'scripts/**/*'
                     ]
                 }]
             }
@@ -331,7 +333,7 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'copy',
-        'rev',
+        //'rev',
         'usemin'
     ]);
 
