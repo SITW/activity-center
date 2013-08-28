@@ -47,7 +47,7 @@ define([
             var cmonth = calDate.getMonth();
             var cday = calDate.getDate();
 
-            calActs.getData(cyear, cmonth);
+            this._calActs.getData(cyear, cmonth);
             // jquery datepicker month starts at 1 (1=January) so we add 1
             //$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
             return false;
@@ -62,7 +62,7 @@ define([
             var cmonth = calDate.getMonth();
             var cday = calDate.getDate();
 
-            calActs.getData(cyear, cmonth);
+            this._calActs.getData(cyear, cmonth);
             // jquery datepicker month starts at 1 (1=January) so we add 1
             //$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
             return false;
