@@ -1,0 +1,13 @@
+{
+  "name": "jquery-week-calendar",
+  "homepage": "https://github.com/chilijung/jquery-frontier-cal",
+  "_release": "7a51a47587",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "7a51a475871882f89df7df3e32890b1470246a3c"
+  },
+  "_source": "git://github.com/chilijung/jquery-frontier-cal.git",
+  "_target": "*",
+  "_originalSource": "git://github.com/chilijung/jquery-frontier-cal.git"
+}
